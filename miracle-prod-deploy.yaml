@@ -1,23 +1,22 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: {{ instance_name }}-miracle
+  name: {{ instance_name }}-miracle-service
   labels:
-    app: {{ instance_name }}-miracle
+    app: {{ instance_name }}-miracle-service
 spec:
   selector:
     matchLabels:
-      app: {{ instance_name }}-miracle
+      app: {{ instance_name }}-miracle-service
   template:
     metadata:
-      name: {{ instance_name }}-miracle
+      name: {{ instance_name }}-miracle-service
       labels:
-        app: {{ instance_name }}-miracle
+        app: {{ instance_name }}-miracle-service
     spec:
       containers:
-#      - name: {{ instance_name }}-miracle
-      - name: miracle-service
-        image: {{ miracle.image }}
+      - name: {{ instance_name }}-miracle-service
+        image: {{ miracle-service.image }}
         ports:
         - containerPort: 8080 # 容器端口
         resources:
@@ -31,33 +30,34 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: miracle-miracle
+  name: {{ instance_name }}-miracle-service
 spec:
   type: NodePort
   ports:
   - port: 8080 # 服务端口
+    nodePort: 31388
   selector:
-    app: {{ instance_name }}-miracle
+    app: {{ instance_name }}-miracle-service
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: {{ instance_name }}-miracle-frontend
+  name: {{ instance_name }}-miracle-ui
   labels:
-    app: {{ instance_name }}-miracle-frontend
+    app: {{ instance_name }}-miracle-ui
 spec:
   selector:
     matchLabels:
-      app: {{ instance_name }}-miracle-frontend
+      app: {{ instance_name }}-miracle-ui
   template:
     metadata:
-      name: {{ instance_name }}-miracle-frontend
+      name: {{ instance_name }}-miracle-ui
       labels:
-        app: {{ instance_name }}-miracle-frontend
+        app: {{ instance_name }}-miracle-ui
     spec:
       containers:
-      - name: {{ instance_name }}-miracle-frontend
-        image: {{ miracle-frontend.image }}
+      - name: {{ instance_name }}-miracle-ui
+        image: {{ miracle-ui.image }}
         ports:
         - containerPort: 80 # 容器端口
         resources:
@@ -71,11 +71,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ instance_name }}-miracle-frontend
+  name: {{ instance_name }}-miracle-ui
 spec:
   type: NodePort
   ports:
   - port: 80 # 服务端口
+    nodePort: 31380
   selector:
-    app: {{ instance_name }}-miracle-frontend
-
+    app: {{ instance_name }}-miracle-ui
