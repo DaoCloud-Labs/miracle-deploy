@@ -18,7 +18,7 @@ spec:
       - name: {{ instance_name }}-miracle-service
         image: {{ miracle-service.image }}
         ports:
-        - containerPort: 8080 # 容器端口
+        - containerPort: {{ ENV_PORT }} # 容器端口
         resources:
           limits:
             cpu: "0.1" # cpu 限制
