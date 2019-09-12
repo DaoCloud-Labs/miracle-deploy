@@ -5,6 +5,7 @@ metadata:
   labels:
     app: {{ instance_name }}-miracle-service
 spec:
+  replicas: {{ REPLICAS }}
   selector:
     matchLabels:
       app: {{ instance_name }}-miracle-service
